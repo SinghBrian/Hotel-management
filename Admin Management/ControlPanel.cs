@@ -27,44 +27,64 @@ namespace Admin_Management
             Client.DefaultRequestHeaders.Accept.Clear();
             Client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
-            string serv = "";
-            if (comboBoxServices.SelectedItem.ToString() == "Sauna")
-            {
-                serv = "100";
-            }
-            else if (comboBoxServices.SelectedItem.ToString() == "Massage")
-            {
-                serv = "300";
-            }
-            else if (comboBoxServices.SelectedItem.ToString() == "Breakfast")
-            {
-                serv = "25";
-            }
-            else if (comboBoxServices.SelectedItem.ToString() == "Gym")
-            {
-                serv = "150";
-            }
-            RequestBodyAdmin res = new RequestBodyAdmin()
-            {
-                 checkin = dateTimePickerIn.Text,
-                 checkout = dateTimePickerOut.Text,
-                 hotel = comboBoxHotel.SelectedItem.ToString(),
-                 adult = textBoxAdults.Text,
-                 child = textBoxChild.Text,
-                 client = clientName.Text,
-                 chamber = comboBoxChamber.SelectedItem.ToString(),
-                 services = serv,
-            };
             
-            HttpResponseMessage resp = await Client.PostAsJsonAsync("api/Clients/PostReservationAdmin", res);
-
-            if(resp.IsSuccessStatusCode)
+            string serv = "";
+            if (comboBoxServices.SelectedItem == null)
             {
-                MessageBox.Show("Réservation effectué !");
+                serv = "0";
             }
             else
             {
-                MessageBox.Show("Veuillez remplir les champs correctement et vérifier si le client existe !");
+                if (comboBoxServices.SelectedItem.ToString() == "Sauna")
+                {
+                    serv = "100";
+                }
+                else if (comboBoxServices.SelectedItem.ToString() == "Massage")
+                {
+                    serv = "300";
+                }
+                else if (comboBoxServices.SelectedItem.ToString() == "Breakfast")
+                {
+                    serv = "25";
+                }
+                else if (comboBoxServices.SelectedItem.ToString() == "Gym")
+                {
+                    serv = "150";
+                }
+                else if (comboBoxServices.SelectedItem.ToString() == "nothing")
+                {
+                    serv = "0";
+                }
+            }
+
+            if (dateTimePickerIn.Text == null || comboBoxHotel.SelectedItem == null || textBoxAdults.Text == null || textBoxChild.Text == null || clientName.Text == null || comboBoxChamber.SelectedItem == null )
+            {
+                MessageBox.Show("Veuillez remplir tous les champs");
+            }
+            else
+            {
+                RequestBodyAdmin res = new RequestBodyAdmin()
+                {
+                    checkin = dateTimePickerIn.Text,
+                    checkout = dateTimePickerOut.Text,
+                    hotel = comboBoxHotel.SelectedItem.ToString(),
+                    adult = textBoxAdults.Text,
+                    child = textBoxChild.Text,
+                    client = clientName.Text,
+                    chamber = comboBoxChamber.SelectedItem.ToString(),
+                    services = serv,
+                };
+
+                HttpResponseMessage resp = await Client.PostAsJsonAsync("api/Clients/PostReservationAdmin", res);
+
+                if (resp.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("Réservation effectué !");
+                }
+                else
+                {
+                    MessageBox.Show("Veuillez remplir les champs correctement et vérifier si le client existe !");
+                }
             }
         }
     }

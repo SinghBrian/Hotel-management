@@ -156,7 +156,8 @@
             "Sauna",
             "Massage",
             "Breakfast",
-            "Gym"});
+            "Gym",
+            "nothing"});
             this.comboBoxServices.Location = new System.Drawing.Point(184, 310);
             this.comboBoxServices.Name = "comboBoxServices";
             this.comboBoxServices.Size = new System.Drawing.Size(151, 31);
